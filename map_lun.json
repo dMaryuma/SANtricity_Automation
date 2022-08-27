@@ -1,0 +1,12 @@
+[
+  {
+    "mappableObjectId": "vol1",
+    "targetId": "host1",
+    "lun": 1
+  },
+  {
+    "mappableObjectId": "vol2",
+    "targetId": "host2",
+    "lun": 1
+  }
+]

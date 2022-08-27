@@ -1,0 +1,7 @@
+{
+  "driveCount": 30,
+  "fdeCapableOnly": false,
+  "driveType": "hdd",
+  "interfaceType": "sas",
+  "protectionInformationCapable": false
+}

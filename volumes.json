@@ -1,0 +1,16 @@
+[
+  {
+    "poolId": "",
+    "name": "vol1",
+    "sizeUnit": "gb",
+    "size": "1",
+    "segSize": 256
+  },
+  {
+    "poolId": "",
+    "name": "vol2",
+    "sizeUnit": "gb",
+    "size": "1",
+    "segSize": 256
+  }
+]

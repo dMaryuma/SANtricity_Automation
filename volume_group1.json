@@ -1,0 +1,6 @@
+{
+  "raidLevel": "raid5",
+  "diskDriveIds": [],
+  "eraseSecuredDrives": true,
+  "name": "vg1"
+}

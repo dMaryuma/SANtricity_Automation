@@ -1,0 +1,28 @@
+[
+  {
+    "name": "host1",
+    "hostType": {
+      "index": "WINDOWS"
+    },
+    "ports": [
+      {
+        "type": "iscsi",
+        "port": "iqn.1991-05.com.microsoft:jumphost.demo.netapp.com",
+        "label": "host1_label"
+      }
+    ]
+  },
+  {
+    "name": "host2",
+    "hostType": {
+      "index": "LINUX"
+    },
+    "ports": [
+      {
+        "type": "iscsi",
+        "port": "iqn.1991-05.com.microsoft:jumphost2.demo.netapp.com",
+        "label": "host2_label"
+      }
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "sequenceNum": 1,
+    "offline": false,
+    "raidLevel": "raid5",
+    "worldWideName": "3233343536373839303134303000000000000000",
+    "volumeGroupRef": "3233343536373839303133393900000000000000",
+    "reserved1": "000000000000000000000000",
+    "reserved2": "",
+    "trayLossProtection": false,
+    "label": "vg1",
+    "state": "complete",
+    "spindleSpeedMatch": false,
+    "spindleSpeed": 0,
+    "isInaccessible": false,
+    "securityType": "capable",
+    "drawerLossProtection": false,
+    "protectionInformationCapable": false,
+    "protectionInformationCapabilities": {
+      "protectionInformationCapable": true,
+      "protectionType": "type2Protection"
+    },
+    "volumeGroupData": {
+      "type": "traditional",
+      "diskPoolData": null
+    },
+    "usage": "unknown",
+    "driveBlockFormat": "allNative",
+    "reservedSpaceAllocated": false,
+    "securityLevel": "unknown",
+    "dulbeEnabled": false,
+    "blkSizeSupported": [],
+    "blkSizeRecommended": 0,
+    "usedSpace": "0",
+    "totalRaidedSpace": "17232428916736",
+    "extents": [
+      {
+        "sectorOffset": "0",
+        "rawCapacity": "17232428916736",
+        "raidLevel": "raid5",
+        "volumeGroupRef": "3233343536373839303133393900000000000000",
+        "freeExtentRef": "3233343536373839303134303100000000000000",
+        "reserved1": "000000000000000000000000",
+        "reserved2": "",
+        "ddpRAIDCapacities": []
+      }
+    ],
+    "largestFreeExtentSize": "17232428916736",
+    "raidStatus": "optimal",
+    "freeSpace": "17232428916736",
+    "drivePhysicalType": "sas",
+    "driveMediaType": "hdd",
+    "normalizedSpindleSpeed": "spindleSpeedSSD",
+    "diskPool": false,
+    "id": "3233343536373839303133393900000000000000",
+    "name": "vg1"
+  }
+]

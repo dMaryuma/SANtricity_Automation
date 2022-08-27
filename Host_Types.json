@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Factory Default",
+    "index": 0,
+    "code": "FactoryDefault",
+    "used": false,
+    "default": true,
+    "nvmeSupported": false
+  },
+  {
+    "name": "Windows",
+    "index": 1,
+    "code": "WINDOWS",
+    "used": false,
+    "default": false,
+    "nvmeSupported": false
+  },
+  {
+    "name": "AIX MPIO",
+    "index": 9,
+    "code": "AIX MPIO",
+    "used": false,
+    "default": false,
+    "nvmeSupported": false
+  },
+  {
+    "name": "VmwTPGSALUA",
+    "index": 10,
+    "code": "VmwTPGSALUA",
+    "used": false,
+    "default": false,
+    "nvmeSupported": true
+  },
+  {
+    "name": "Solaris (v11 or later)",
+    "index": 17,
+    "code": "SolTPGSALUA",
+    "used": false,
+    "default": false,
+    "nvmeSupported": false
+  },
+  {
+    "name": "SVC",
+    "index": 18,
+    "code": "SVC",
+    "used": false,
+    "default": false,
+    "nvmeSupported": false
+  },
+  {
+    "name": "Linux",
+    "index": 28,
+    "code": "LINUX",
+    "used": true,
+    "default": false,
+    "nvmeSupported": true
+  },
+  {
+    "name": "ATTO Cluster (all operating systems)",
+    "index": 29,
+    "code": "ATTOClusterAllOS",
+    "used": false,
+    "default": false,
+    "nvmeSupported": false
+  }
+]
