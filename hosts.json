@@ -24,5 +24,18 @@
         "label": "host2_label"
       }
     ]
+  },
+  {
+    "name": "host3",
+    "hostType": {
+      "index": "VmwTPGSALUA"
+    },
+    "ports": [
+      {
+        "type": "iscsi",
+        "port": "iqn.1991-05.com.microsoft:jumphost3.demo.netapp.com",
+        "label": "host3_label"
+      }
+    ]
   }
 ]
