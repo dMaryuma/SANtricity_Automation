@@ -4,13 +4,25 @@
     "name": "vol1",
     "sizeUnit": "gb",
     "size": "1",
-    "segSize": 256
+    "segSize": 256,
+    "metaTags": [
+      {
+        "key": "workloadId",
+        "value": "vmware_vmfs_workload_1"
+      }
+    ]
   },
   {
     "poolId": "",
     "name": "vol2",
     "sizeUnit": "gb",
     "size": "1",
-    "segSize": 256
+    "segSize": 256,
+    "metaTags": [
+      {
+        "key": "workloadId",
+        "value": "vmware_vmfs_workload_1"
+      }
+    ]
   }
 ]
