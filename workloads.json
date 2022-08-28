@@ -1,0 +1,28 @@
+[
+  {
+    "name": "vmware_vmfs_workload_1",
+    "workloadAttributes": [
+      {
+        "key": "profileId",
+        "value": "VMware VMFS 5.1"
+      },
+      {
+        "key": "isUserDefined",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "name": "vmware_vmfs_workload_2",
+    "workloadAttributes": [
+      {
+        "key": "profileId",
+        "value": "VMware VMFS 5.1"
+      },
+      {
+        "key": "isUserDefined",
+        "value": "false"
+      }
+    ]
+  }
+]
