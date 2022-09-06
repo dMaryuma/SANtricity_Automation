@@ -1,0 +1,68 @@
+[
+  {
+    "controllerRef": "1",
+    "enableRemoteAccess": true,
+    "ipv4GatewayAddress": "192.168.0.1",
+    "interfaceRef": "",
+    "interfaceName": "wan0",
+    "ipv4Enabled": true,
+    "ipv4Address": "192.168.0.62",
+    "ipv4SubnetMask": "255.255.255.0",
+    "ipv4AddressConfigMethod": "configStatic",
+    "ipv6Enabled": false,
+    "dnsAcquisitionDescriptor": {
+      "dnsServers": [
+        {
+          "addressType": "ipv4",
+          "ipv4Address": "192.168.0.253"
+        }
+      ]
+    },
+    "ntpAcquisitionDescriptor": {
+      "ntpAcquisitionType": "stat",
+      "ntpServers": [
+        {
+          "addrType": "ipvx",
+          "domainName": "demo.netapp.com",
+          "ipvxAddress": {
+            "addressType": "ipv4",
+            "ipv4Address": "192.168.0.253"
+          }
+        }
+      ]
+    }
+  },
+  { 
+    "controllerRef": "2",
+    "enableRemoteAccess": true,
+    "ipv4GatewayAddress": "192.168.0.1",
+    "interfaceRef": "",
+    "interfaceName": "wan0",
+    "ipv4Enabled": true,
+    "ipv4Address": "192.168.0.63",
+    "ipv4SubnetMask": "255.255.255.0",
+    "ipv4AddressConfigMethod": "configStatic",
+    "ipv6Enabled": false,
+    "dnsAcquisitionDescriptor": {
+      "dnsServers": [
+        {
+          "addressType": "ipv4",
+          "ipv4Address": "192.168.0.253"
+        }
+      ]
+    },
+    "ntpAcquisitionDescriptor": {
+      "ntpAcquisitionType": "stat",
+      "ntpServers": [
+        {
+          "addrType": "ipvx",
+          "domainName": "demo.netapp.com",
+          "ipvxAddress": {
+            "addressType": "ipv4",
+            "ipv4Address": "192.168.0.253"
+          }
+        }
+      ]
+    }
+  }
+]
