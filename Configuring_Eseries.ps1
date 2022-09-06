@@ -23,7 +23,20 @@ Param (
    [Parameter(Mandatory=$true)]
    [String]$mapLuns
 )
+#### Functions ####
+function GetEthernetInterface($storageSystem){
+    $ethernetInterfaces = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/configuration/ethernet-interfaces" -ErrorAction stop
+    return $ethernetInterfaces
+}
+function GetControllers($StorageSystem){
+    $controllers = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/controllers" -ErrorAction stop
+    return $controllers
+}
+function SetManagementInterface($StorageSystem, $interface){
+    $result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/configuration/ethernet-interfaces" -Body ($interface|ConvertTo-Json) -ErrorAction stop
+}
 
+#### END Functions
 # Ignore Self-Signed Certificate:
 add-type @"
    using System.Net;
@@ -49,6 +62,7 @@ $hosts = get-content "C:\scripts\hosts.json" | ConvertFrom-Json
 $hostCluster = Get-Content "C:\scripts\hostCluster.json"| ConvertFrom-Json
 $mapLuns = get-content "C:\scripts\map_lun.json" | ConvertFrom-Json
 $workloads = get-content "C:\scripts\workloads.json" | ConvertFrom-Json
+$managementInterfaces = get-content "C:\scripts\management_interfaces.json" | ConvertFrom-Json
 $cred = new-object -typename System.Management.Automation.PSCredential -argumentlist $username, $($password | ConvertTo-SecureString -AsPlainText -Force)
 
 # Getting storage system
@@ -169,3 +183,24 @@ foreach ($lun in $mapLuns){
     }catch{write-host "$_ `r`n for lun mapping - volume ref: $($lun.mappableObjectId) to host ref: $($lun.targetId)"}
 }
 
+## Set Management Inferface:
+# get ethernetInterfaces and controllers
+$ethernetInterfaces = GetEthernetInterface $StorageSystem
+$controllers = GetControllers $StorageSystem
+
+#set controllerRef
+foreach ($int in $managementInterfaces){
+    $int.controllerRef = $controllers[0].controllerRef
+}
+#set interfaceRef
+foreach ($int in $managementInterfaces){
+    foreach ($eth in $ethernetInterfaces){
+        if ($int.interfaceName -like $eth.interfaceName){
+            $int.interfaceRef = $eth.interfaceRef
+        }
+    }
+}
+# Set interface ip address:
+foreach ($int in $managementInterfaces){
+    SetManagementInterface -StorageSystem $StorageSystem -interface $int
+}
