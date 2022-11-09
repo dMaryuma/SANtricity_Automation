@@ -1,7 +1,7 @@
 {
-  "driveCount": 30,
+  "driveCount": 11,
   "fdeCapableOnly": false,
-  "driveType": "hdd",
+  "driveType": "ssd",
   "interfaceType": "sas",
   "protectionInformationCapable": false
 }

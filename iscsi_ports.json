@@ -1,0 +1,174 @@
+[
+{
+  "port": "e0a",
+  "controller": "a",
+  "iscsiInterface":"",
+  "settings":
+	{
+	  "ipv4Enabled":[true],
+	  "ipv4GatewayAddress":[],
+	  "ipv4Address":["1.1.1.1"],
+	  "ipv4SubnetMask":["255.255.255.0"],
+	  "ipv4AddressConfigMethod":["configStatic"],
+	  "ipv4VlanId":[
+	    {
+	      "isEnabled":false,
+		  "value":0
+	    }
+	  ],
+	  "ipv4OutboundPacketPriority":[
+	    {
+		  "isEnabled":false,
+		  "value":1
+		}
+	  ],
+	  "ipv6Enabled":[false],
+	  "maximumFramePayloadSize":[9000]
+    }
+},
+{
+  "port": "e0b",
+  "controller": "a",
+  "iscsiInterface":"",
+  "settings":
+	{
+	  "ipv4Enabled":[true],
+	  "ipv4GatewayAddress":[],
+	  "ipv4Address":["2.2.2.2"],
+	  "ipv4SubnetMask":["255.255.255.0"],
+	  "ipv4AddressConfigMethod":["configStatic"],
+	  "ipv4VlanId":[
+	    {
+	      "isEnabled":false,
+		  "value":0
+	    }
+	  ],
+	  "ipv4OutboundPacketPriority":[
+	    {
+		  "isEnabled":false,
+		  "value":1
+		}
+	  ],
+	  "ipv6Enabled":[false],
+	  "maximumFramePayloadSize":[9000]
+    }
+},
+{
+  "port": "e0c",
+  "controller": "a",
+  "iscsiInterface":"",
+  "settings":
+	{
+	  "ipv4Enabled":[true],
+	  "ipv4GatewayAddress":[],
+	  "ipv4Address":["3.3.3.3"],
+	  "ipv4SubnetMask":["255.255.255.0"],
+	  "ipv4AddressConfigMethod":["configStatic"],
+	  "ipv4VlanId":[
+	    {
+	      "isEnabled":true,
+		  "value":8
+	    }
+	  ],
+	  "ipv4OutboundPacketPriority":[
+	    {
+		  "isEnabled":false,
+		  "value":1
+		}
+	  ],
+	  "ipv6Enabled":[false],
+	  "maximumFramePayloadSize":[9000]
+    }
+},
+{
+  "port": "e0a",
+  "controller": "b",
+  "iscsiInterface":"",
+  "settings":
+	{
+	  "ipv4Enabled":[true],
+	  "ipv4GatewayAddress":[],
+	  "ipv4Address":["4.4.4.4"],
+	  "ipv4SubnetMask":["255.255.255.0"],
+	  "ipv4AddressConfigMethod":["configStatic"],
+	  "ipv4VlanId":[
+	    {
+	      "isEnabled":false,
+		  "value":0
+	    }
+	  ],
+	  "ipv4OutboundPacketPriority":[
+	    {
+		  "isEnabled":false,
+		  "value":1
+		}
+	  ],
+	  "ipv6Enabled":[false],
+	  "maximumFramePayloadSize":[9000]
+    }
+},
+{
+  "port": "e0b",
+  "controller": "b",
+  "iscsiInterface":"",
+  "settings":
+	{
+	  "ipv4Enabled":[true],
+	  "ipv4GatewayAddress":[],
+	  "ipv4Address":["5.5.5.5"],
+	  "ipv4SubnetMask":["255.255.255.0"],
+	  "ipv4AddressConfigMethod":["configStatic"],
+	  "ipv4VlanId":[
+	    {
+	      "isEnabled":false,
+		  "value":0
+	    }
+	  ],
+	  "ipv4OutboundPacketPriority":[
+	    {
+		  "isEnabled":false,
+		  "value":1
+		}
+	  ],
+	  "ipv6Enabled":[false],
+	  "maximumFramePayloadSize":[9000]
+    }
+},
+{
+  "port": "e0c",
+  "controller": "b",
+  "iscsiInterface":"",
+  "settings":
+	{
+	  "ipv4Enabled":[true],
+	  "ipv4GatewayAddress":[],
+	  "ipv4Address":["6.6.6.6"],
+	  "ipv4SubnetMask":["255.255.255.0"],
+	  "ipv4AddressConfigMethod":["configStatic"],
+	  "ipv4VlanId":[
+	    {
+	      "isEnabled":true,
+		  "value":8
+	    }
+	  ],
+	  "ipv4OutboundPacketPriority":[
+	    {
+		  "isEnabled":false,
+		  "value":1
+		}
+	  ],
+	  "ipv6Enabled":[false],
+	  "maximumFramePayloadSize":[9000]
+    }
+},
+{
+  "port": "e0d",
+  "controller": "b",
+  "iscsiInterface":"",
+  "settings":
+	{
+	  "ipv4Enabled":[false],
+	  "ipv6Enabled":[false]
+    }
+}
+]
