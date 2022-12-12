@@ -1,7 +1,7 @@
 [
 {
   "port": "e0a",
-  "controller": "a",
+  "controllerRef": "A",
   "iscsiInterface":"",
   "settings":
 	{
@@ -13,7 +13,7 @@
 	  "ipv4VlanId":[
 	    {
 	      "isEnabled":false,
-		  "value":0
+		  "value":1
 	    }
 	  ],
 	  "ipv4OutboundPacketPriority":[
@@ -28,7 +28,7 @@
 },
 {
   "port": "e0b",
-  "controller": "a",
+  "controllerRef": "A",
   "iscsiInterface":"",
   "settings":
 	{
@@ -55,7 +55,7 @@
 },
 {
   "port": "e0c",
-  "controller": "a",
+  "controllerRef": "A",
   "iscsiInterface":"",
   "settings":
 	{
@@ -81,8 +81,35 @@
     }
 },
 {
+  "port": "e0d",
+  "controllerRef": "A",
+  "iscsiInterface":"",
+  "settings":
+	{
+	  "ipv4Enabled":[true],
+	  "ipv4GatewayAddress":[],
+	  "ipv4Address":["0.0.0.0"],
+	  "ipv4SubnetMask":["255.255.255.0"],
+	  "ipv4AddressConfigMethod":["configStatic"],
+	  "ipv4VlanId":[
+	    {
+	      "isEnabled":false,
+		  "value":1
+	    }
+	  ],
+	  "ipv4OutboundPacketPriority":[
+	    {
+		  "isEnabled":false,
+		  "value":1
+		}
+	  ],
+	  "ipv6Enabled":[false],
+	  "maximumFramePayloadSize":[9000]
+    }
+},
+{
   "port": "e0a",
-  "controller": "b",
+  "controllerRef": "B",
   "iscsiInterface":"",
   "settings":
 	{
@@ -94,7 +121,7 @@
 	  "ipv4VlanId":[
 	    {
 	      "isEnabled":false,
-		  "value":0
+		  "value":1
 	    }
 	  ],
 	  "ipv4OutboundPacketPriority":[
@@ -109,7 +136,7 @@
 },
 {
   "port": "e0b",
-  "controller": "b",
+  "controllerRef": "B",
   "iscsiInterface":"",
   "settings":
 	{
@@ -121,7 +148,7 @@
 	  "ipv4VlanId":[
 	    {
 	      "isEnabled":false,
-		  "value":0
+		  "value":1
 	    }
 	  ],
 	  "ipv4OutboundPacketPriority":[
@@ -136,7 +163,7 @@
 },
 {
   "port": "e0c",
-  "controller": "b",
+  "controllerRef": "B",
   "iscsiInterface":"",
   "settings":
 	{
@@ -163,12 +190,29 @@
 },
 {
   "port": "e0d",
-  "controller": "b",
+  "controllerRef": "B",
   "iscsiInterface":"",
   "settings":
 	{
-	  "ipv4Enabled":[false],
-	  "ipv6Enabled":[false]
+	  "ipv4Enabled":[true],
+	  "ipv4GatewayAddress":[],
+	  "ipv4Address":["0.0.0.0"],
+	  "ipv4SubnetMask":["255.255.255.0"],
+	  "ipv4AddressConfigMethod":["configStatic"],
+	  "ipv4VlanId":[
+	    {
+	      "isEnabled":false,
+		  "value":1
+	    }
+	  ],
+	  "ipv4OutboundPacketPriority":[
+	    {
+		  "isEnabled":false,
+		  "value":1
+		}
+	  ],
+	  "ipv6Enabled":[false],
+	  "maximumFramePayloadSize":[9000]
     }
 }
 ]
