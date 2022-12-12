@@ -6,12 +6,16 @@
 
 ## Updated 1.2
 ## Add new functions and bug fixes 11/2022
+## Update 1.3
+## Fix reference ID between iSCSI ports, and management ports to ControllerRef
+## Add function to lun HostCluster
+## Add function for clear configuration (not running yet)
 #################################################
 
-
+$ErrorActionPreference = "STOP"
 $username = "admin"
-$password = "1q2w3e4R"
-$ipAddress = "10.0.20.246"
+$password = "admin"
+$ipAddress = "192.168.1.1"
 #Param (
 #   [Parameter(Mandatory=$true)]
 #   [String]$username,
@@ -22,36 +26,26 @@ $ipAddress = "10.0.20.246"
 #)
 #### Functions ####
 function GetEthernetInterface($storageSystem){
-    $ethernetInterfaces = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/configuration/ethernet-interfaces" 
+    $ethernetInterfaces = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/configuration/ethernet-interfaces"
     return $ethernetInterfaces
 	
 }
 function GetControllers($StorageSystem){
-    $controllers = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/controllers" 
+    $controllers = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/controllers"
     return $controllers
 	
 }
 function SetManagementInterface($StorageSystem, $interface){
-    $result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/configuration/ethernet-interfaces" -Body ($interface|ConvertTo-Json -Depth 5)
+    $result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/configuration/ethernet-interfaces" -Body ($interface|ConvertTo-Json -Depth 6) -ErrorAction Continue
     return $result
 }
 function PrepareManamegemntInterface(){
-    #set controllerRef
-    foreach ($int in $managementInterfaces){
-        foreach ($cont in $controllers){
-            if ($int.controllerRef -eq 0){
-                $int.controllerRef = $controllers[0].controllerRef
-            }
-            if ($int.controllerRef -eq 1){
-                $int.controllerRef = $controllers[1].controllerRef
-            }
-        }
-    }
     #set interfaceRef
     foreach ($int in $managementInterfaces){
         foreach ($eth in $ethernetInterfaces){
             if ($int.interfaceName -like $eth.interfaceName -and $int.controllerRef -like $eth.controllerRef){
                 $int.interfaceRef = $eth.interfaceRef
+                Write-Host "Setting interfaceRef instead of Port" -ForegroundColor Cyan
             }
         }
     }
@@ -100,14 +94,14 @@ function CreateVolumes(){
     # Create Volumes
     foreach ($vol in $volumes){
         try{
-            $vol_post_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/volumes" -Body ($vol|ConvertTo-Json) 
+            $vol_post_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/volumes" -Body ($vol|ConvertTo-Json)  -ErrorAction Continue
             $vol | Add-Member -MemberType NoteProperty "VolumeRef" -Value $vol_post_result.volumeRef -Force
         }catch{Write-Host "$_ For Creating volume $($vol.name)"}
     }
 }
 function GetHostTypes(){
     # Retrieving the Host Type and Host Ports
-    $global:HostsTypes = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/host-types" 
+    $global:HostsTypes = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/host-types"
     $global:HostsPorts = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/unassociated-host-ports" 
 }
 function CreateHost(){
@@ -121,7 +115,7 @@ function CreateHost(){
         }
         # create hosts
         try{
-            $host_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/hosts" -Body ($h|ConvertTo-Json)
+            $host_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/hosts" -Body ($h|ConvertTo-Json) -ErrorAction Continue
             $h | Add-Member -NotePropertyName "HostRef" -NotePropertyValue $host_result.hostRef -force
         }catch{Write-Host $_}
     }
@@ -140,7 +134,8 @@ function CreateHostCluster(){
     }
     foreach ($host_cluster in $hostCluster){
         try{
-            $host_cluster_post_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/host-groups" -Body ($host_cluster|ConvertTo-Json)
+            $host_cluster_post_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/host-groups" -Body ($host_cluster|ConvertTo-Json) -ErrorAction Continue
+            $host_cluster | Add-Member -NotePropertyName "HostRef" -NotePropertyValue $host_cluster_post_result.id -force
             }catch{Write-Host $_}
     }
 }
@@ -150,8 +145,14 @@ function MapLun(){
         foreach ($h in $hosts){
             if ($lun.targetId -like $h.name){
                 $lun.targetId = $h.HostRef
-                break
             }
+        }
+        if ($lun.isHostCluster){
+            foreach ($h in $hostCluster){
+                if ($lun.targetId -like $h.name){
+                    $lun.targetId = $h.HostRef
+                }
+            }    
         }
         foreach ($vol in $volumes){
             if ($lun.mappableObjectId -like $vol.name){
@@ -163,22 +164,22 @@ function MapLun(){
     # Mapping luns
     foreach ($lun in $mapLuns){
         try{
-            $lun_map_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/volume-mappings" -Body ($lun|ConvertTo-Json)
+            $lun_map_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/volume-mappings" -Body ($lun|ConvertTo-Json) -ErrorAction Continue
             }catch{Write-Host $_}
     }
 }
 function FindiSCSIPortsReference(){
-    $hardware_inventory = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/hardware-inventory" 
-    $interfaces = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/interfaces?interfaceType=iscsi&channelType=hostside"
+    $hardware_inventory = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/hardware-inventory" -ErrorAction Continue
+    $interfaces = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/interfaces?interfaceType=iscsi&channelType=hostside" -ErrorAction Continue
     # Add ControllerRef to $iscsiPorts
-    foreach ($port in $iscsiPorts){
-        if ($port.controller -like 'a'){
-            $port | Add-Member -NotePropertyName "ControllerRef" -NotePropertyValue $controllers[0].controllerRef -force
-        }
-        elseif ($port.controller -like 'b'){
-            $port | Add-Member -NotePropertyName "ControllerRef" -NotePropertyValue $controllers[1].controllerRef -force
-        }
-    }
+#    foreach ($port in $iscsiPorts){
+#        if ($port.controller -like 'A'){
+#            $port | Add-Member -NotePropertyName "Controller" -NotePropertyValue $controllers[0].controllerRef -force
+#        }
+#        elseif ($port.controller -like 'B'){
+#            $port | Add-Member -NotePropertyName "ControllerRef" -NotePropertyValue $controllers[1].controllerRef -force
+#        }
+#    }
     
     foreach ($port in $iscsiPorts){
         foreach ($channelPort in $hardware_inventory.channelPorts){
@@ -199,18 +200,18 @@ function ConfigureiSCSIPorts(){
     foreach ($port in $iscsiPorts){
         $iscsiPorts_result = $null
         Write-Host "Configuring iSCSI port $($port.port) on controller $($port.controller)..."
-        if ($port.controller -like 'a'){
+        if ($port.controller -like 'A'){
 
             $port.psobject.Properties.Remove('controller')
             $port.psobject.Properties.Remove('port')
             $port.psobject.Properties.Remove('controllerRef')
-            $iscsiPorts_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/symbol/setIscsiInterfaceProperties?controller=a" -Body ($port | ConvertTo-Json -Depth 5)
+            $iscsiPorts_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/symbol/setIscsiInterfaceProperties?controller=a" -Body ($port | ConvertTo-Json -Depth 5) -ErrorAction Continue
         }
-        elseif ($port.controller -like 'b'){
+        elseif ($port.controller -like 'B'){
             $port.psobject.Properties.Remove('controller')
             $port.psobject.Properties.Remove('port')
             $port.psobject.Properties.Remove('controllerRef')
-            $iscsiPorts_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/symbol/setIscsiInterfaceProperties?controller=b" -Body ($port | ConvertTo-Json -Depth 5)
+            $iscsiPorts_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/symbol/setIscsiInterfaceProperties?controller=b" -Body ($port | ConvertTo-Json -Depth 5) -ErrorAction Continue
         }
         if ($iscsiPorts_result -like 'ok'){
             Write-Host "Successfuly configured port with ip address: $($port.settings.ipv4Address)" -ForegroundColor Green
@@ -218,7 +219,7 @@ function ConfigureiSCSIPorts(){
     }
 }
 function GetiSCSITarget(){
-    $iscsi_target_result = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/iscsi/target-settings" 
+    $iscsi_target_result = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/iscsi/target-settings" -ErrorAction Continue
     return $iscsi_target_result.nodeName.iscsiNodeName
 }
 function ConfigureSANtricityName(){
@@ -226,6 +227,32 @@ function ConfigureSANtricityName(){
 }
 function ChangeUnnamedDiscoverySessions(){
     $UnnamedDiscoverySession_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/iscsi/entity" -Body ($UnnamedDiscoverySession | ConvertTo-Json)
+}
+function SetControllerRefIDtoFiles(){
+    # Set contoller ref on $iscsiPorts
+    foreach ($port in $iscsiPorts){
+        foreach ($cont in $controllers){
+            if ($port.controllerRef -like $cont.physicalLocation.label){
+                $port.controllerRef = $cont.controllerRef
+                $port | Add-Member -NotePropertyName "controller" -NotePropertyValue $cont.physicalLocation.label -Force
+            }
+        }
+    }
+    # Set controller ref on $managementInterfaces
+    foreach ($port in $managementInterfaces){
+        foreach ($cont in $controllers){
+            if ($port.controllerRef -like $cont.physicalLocation.label){
+                $port.controllerRef = $cont.controllerRef
+            }
+        }
+    }
+}
+function GetAccessVolume(){
+    $access_volume_result = Invoke-RestMethod -Method get -Credential $cred -ContentType "application/json" -uri "$($uri)storage-systems/$($StorageSystem.id)/access-volume" -ErrorAction Continue
+    $global:accessVolumeRef = $access_volume_result.accessVolumeRef
+}
+function ResetConfiguration($type){
+    $reset_configuration_result = Invoke-RestMethod -Method post -Credential $cred -Headers @{"accept"="application/json"; "Content-Type"="application/json"} -uri "$($uri)storage-systems/$($StorageSystem.id)/symbol/resetSAConfiguration?verboseErrorResponse=true" -Body $type
 }
 
 #### END Functions
@@ -245,9 +272,7 @@ add-type @"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # initialize parameters and json files
-$ErrorActionPreference = "STOP"
 try{
-
     $uri = "https://$($ipAddress):8443/devmgr/v2/"
 	$drivesSelected = get-content "$PSScriptRoot\drives_selected.json"
     $volumeGroup = Get-Content "$PSScriptRoot\volume_group.json" | ConvertFrom-Json
@@ -263,17 +288,15 @@ try{
     $cred = new-object -typename System.Management.Automation.PSCredential -argumentlist $username, $($password | ConvertTo-SecureString -AsPlainText -Force)
 }catch{write-host $_}
 
-
-
 ############ MAIN ############
-
-
-
-
 try{
     $StorageSystem = GetStorageSystem
     ## Create VolumeGroup
     $controllers = GetControllers $StorageSystem
+    ##
+    Write-Host "Setting ControllerRef for iSCSI ports..."
+    SetControllerRefIDtoFiles
+    Write-Host "Successfully Set ControllerRef for iSCSI ports" -ForegroundColor Green
     Write-Host "Setting Storage Name..."
     ConfigureSANtricityName
     Write-Host "Storage name changed to '$($SANtricityName.name)'" -ForegroundColor Green
@@ -322,15 +345,16 @@ try{
     Write-Host "Setting Management Interfaces..."
     $ethernetInterfaces = GetEthernetInterface $StorageSystem
 
-    PrepareManamegemntInterface # Contoller B is index 0, Contoller A is index 1
-    
     # Set interface ip address:
+    Write-Host "Preparing Management Interfaces..."
+    PrepareManamegemntInterface
+    Write-Host "Successfuly Prepared Management Interfaces" -ForegroundColor Green
     foreach ($interface in $managementInterfaces){
         try{
             Write-Host "Setting ip, dns, ntp to controller $($interface.controllerRef)..."
             SetManagementInterface -StorageSystem $StorageSystem -interface $interface | Out-Null
             Write-Host "Mgmt ip Successfully configured on node $($interface.controllerRef)" -ForegroundColor Green
         }
-        catch{write-host $_}
+        catch{write-host $_ -ForegroundColor red}
     }
-}catch{Write-Host $_ -ForegroundColor Red}
+}catch{Write-Host $_ -ForegroundColor red}
