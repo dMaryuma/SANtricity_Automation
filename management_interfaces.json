@@ -1,12 +1,12 @@
 [
   {
-    "controllerRef": "1",
+    "controllerRef": "B",
     "enableRemoteAccess": true,
-    "ipv4GatewayAddress": "192.168.0.1",
+    "ipv4GatewayAddress": "192.168.0.254",
     "interfaceRef": "",
     "interfaceName": "wan0",
     "ipv4Enabled": true,
-    "ipv4Address": "192.168.0.63",
+    "ipv4Address": "192.168.0.2",
     "ipv4SubnetMask": "255.255.255.0",
     "ipv4AddressConfigMethod": "configStatic",
     "ipv6Enabled": false,
@@ -15,7 +15,7 @@
   	"dnsServers": [
   	  {
   		"addressType": "ipv4",
-  		"ipv4Address": "192.168.0.253"
+  		"ipv4Address": "192.168.0.100"
   	  }
   	]
     },
@@ -26,20 +26,32 @@
   		"addrType": "ipvx",
   		"ipvxAddress": {
   		  "addressType": "ipv4",
-  		  "ipv4Address": "192.168.0.253"
+  		  "ipv4Address": "192.168.0.10"
   		}
   	  }
   	]
     }
   },
-  {
-    "controllerRef": "2",
+    {
+    "controllerRef": "B",
     "enableRemoteAccess": true,
-    "ipv4GatewayAddress": "192.168.0.1",
+    "ipv4GatewayAddress": "192.168.0.254",
+    "interfaceRef": "",
+    "interfaceName": "wan1",
+    "ipv4Enabled": true,
+    "ipv4Address": "192.168.0.3",
+    "ipv4SubnetMask": "255.255.255.0",
+    "ipv4AddressConfigMethod": "configStatic",
+    "ipv6Enabled": false
+  },
+  {
+    "controllerRef": "A",
+    "enableRemoteAccess": true,
+    "ipv4GatewayAddress": "192.168.0.254",
     "interfaceRef": "",
     "interfaceName": "wan0",
     "ipv4Enabled": true,
-    "ipv4Address": "192.168.0.62",
+    "ipv4Address": "192.168.0.1",
     "ipv4SubnetMask": "255.255.255.0",
     "ipv4AddressConfigMethod": "configStatic",
     "ipv6Enabled": false,
@@ -48,7 +60,7 @@
   	"dnsServers": [
   	  {
   		"addressType": "ipv4",
-  		"ipv4Address": "192.168.0.253"
+  		"ipv4Address": "192.168.0.100"
   	  }
   	]
     },
@@ -59,10 +71,22 @@
   		"addrType": "ipvx",
   		"ipvxAddress": {
   		  "addressType": "ipv4",
-  		  "ipv4Address": "192.168.0.253"
+  		  "ipv4Address": "192.168.0.10"
   		}
   	  }
   	]
     }
+  },
+    {
+    "controllerRef": "A",
+    "enableRemoteAccess": true,
+    "ipv4GatewayAddress": "192.168.0.254",
+    "interfaceRef": "",
+    "interfaceName": "wan1",
+    "ipv4Enabled": true,
+    "ipv4Address": "192.168.0.247",
+    "ipv4SubnetMask": "255.255.255.0",
+    "ipv4AddressConfigMethod": "configDhcp",
+    "ipv6Enabled": false
   }
 ]
