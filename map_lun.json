@@ -1,12 +1,23 @@
 [
   {
+	"isHostCluster": "true",  
     "mappableObjectId": "vol1",
     "targetId": "host1",
-    "lun": 1
+    "lun": 1,
+	"UnAssignAccess": "true"
   },
   {
+	"isHostCluster": "true",
     "mappableObjectId": "vol2",
     "targetId": "host2",
-    "lun": 1
+    "lun": 2,
+	"UnAssignAccess": "true"
+  },
+  {
+	"isHostCluster": "false",
+    "mappableObjectId": "vol3",
+    "targetId": "host3",
+    "lun": 3,
+	"UnAssignAccess": "true"
   }
 ]
